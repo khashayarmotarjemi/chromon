@@ -1,38 +1,69 @@
 const puppeteer = require('puppeteer-core');
+const shell = require('shelljs');
 
-let interval = 3000;
+let interval = 1000;
 
+let isMuted = false;
+
+function mute() {
+  if(!isMuted) {
+    shell.exec('amixer set Master mute');
+    console.log('mute');
+    isMuted = true;
+  }
+}
+
+function unMute() {
+  if(isMuted) {
+    shell.exec('amixer set Master unmute');
+    console.log('unmute');
+    isMuted = false;
+  }
+}
 
 (async () => {
-    // set some options (set headless to false so we can see 
-    // this automated browsing experience)
-    let launchOptions = { headless: false, 
+  let launchOptions = { headless: false, 
                           executablePath: '/usr/bin/chromium',
                           args: ['--no-sandbox'],
-                        userDataDir: '~/.config/chromium' };
+                          userDataDir: 'config/chromium' };
 
-    const browser = await puppeteer.launch(launchOptions);
+  const browser = await puppeteer.launch(launchOptions);
 
-    setInterval(async () => {
-      const pages = await browser.pages();
+  let page = await browser.newPage();
+  await page.goto('http://open.spotify.com');
 
-      pages.forEach( async (page) => {
-        let title = await page.title();
-        if(title.startsWith("www.goo")) {
+  
 
-            // mute
-            console.log("mute");
+  setInterval(async () => {
+    const pages = await browser.pages();
 
-            let unmuteInterval = setInterval(async () => {
-                let title = await page.title();
-                if(!title.startsWith("www.goo")) {
-                    console.log('unmute');
-                    clearInterval(unmuteInterval);
-                }
-            }, 1000);
-        }
-    })  
-    }, interval);
+    let titles = await Promise.all(pages.map( async (page) => {
+      return page.title().then(
+        (title) => {
+          return title;
+        }, (error) => {
+          return '';
+        });
+    }));
+
+    let found = await titles.reduce((prev,title) =>{
+      if(prev) {
+        return true;
+      }
+
+      if(title.startsWith("Advert")) {
+        return true;
+      }
+      return false;
+
+    },false);
+
+    if(!found) {
+      unMute();
+    } else {
+      mute();
+    }
+  }, interval);
 })();
 
     

@@ -1,8 +1,0 @@
-2020/07/15-17:26:45.048 87a0 Reusing MANIFEST /home/khashayar/dev/spotify-ad-muter/~/.config/chromium/Default/IndexedDB/https_tpc.googlesyndication.com_0.indexeddb.leveldb/MANIFEST-000001
-2020/07/15-17:26:45.048 87a0 Recovering log #7
-2020/07/15-17:26:45.048 87a0 Reusing old log /home/khashayar/dev/spotify-ad-muter/~/.config/chromium/Default/IndexedDB/https_tpc.googlesyndication.com_0.indexeddb.leveldb/000007.log 
-2020/07/15-17:26:51.394 87e9 Level-0 table #11: started
-2020/07/15-17:26:51.394 87e9 Level-0 table #11: 0 bytes OK
-2020/07/15-17:26:51.409 87e9 Delete type=0 #7
-2020/07/15-17:26:51.409 87e9 Manual compaction at level-0 from (begin) .. (end); will stop at (end)
-2020/07/15-17:26:51.409 87e9 Manual compaction at level-1 from (begin) .. (end); will stop at (end)
